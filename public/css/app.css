@@ -1,0 +1,63 @@
+body {
+    padding-top:50px;
+    background: #DA22FF; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #DA22FF , #9733EE); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #DA22FF , #9733EE); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.todo-app {
+    width:400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+
+.header {
+    display: block;
+    background-color: #02A9EA;
+    padding: 1rem;
+    color: white;
+}
+
+.header h3 {
+    font-size: 1.4em;
+    margin: 0;
+}
+
+.todo-list {
+    background-color: #FFFEFF;
+    padding: 0;
+}
+
+.todo-list li {
+    padding: 10px;
+    display: block;
+    min-height: 30px;
+}
+
+.todo-list li:nth-child(odd) {
+    background-color: #F5F5F5;
+}
+
+.delete-button {
+    float: right;
+}
+
+.btn-primary {
+    background-color: #02A9EA;
+}
+
+.form-control,
+.btn.square {
+    border-radius: 0;
+}
+
+.btn.square {
+    border-color: transparent;
+}
+
+.btn-danger {
+    background-color: #E84855;
+}
