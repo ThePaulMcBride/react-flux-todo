@@ -51,8 +51,6 @@ class TodoStore extends EventEmitter {
     }
 
     updateStatus(todo) {
-        console.log(todo);
-
         for(var i = 0; i < this.todos.length; i++)
         {
             if(this.todos[i]._id == todo.id)
@@ -79,13 +77,13 @@ class TodoStore extends EventEmitter {
 
     handleActions(action) {
         switch(action.type) {
-            case "CREATE_TODO":
-                this.createTodo(action.todo);
-                break;
-
             case "RECEIVED_TODOS":
                 this.todos = action.todos;
                 this.emit('change');
+                break;
+
+            case "CREATE_TODO":
+                this.createTodo(action.todo);
                 break;
 
             case "DELETE_TODO":
