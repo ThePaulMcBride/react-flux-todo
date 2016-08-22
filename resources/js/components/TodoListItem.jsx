@@ -10,12 +10,6 @@ class TodoListItem extends React.Component {
         this.updateTodo = this.updateTodo.bind(this);
         this.saveTodo = this.saveTodo.bind(this);
         this.updateStatus = this.updateStatus.bind(this);
-
-        this.state = {
-            name: this.props.todo.name,
-            editing: false,
-            complete: this.props.todo.complete
-        };
     }
 
     deleteTodo(e) {
@@ -24,15 +18,11 @@ class TodoListItem extends React.Component {
     }
 
     enableEditing() {
-        this.setState({editing: true});
+        this.props.enableEditing(this.props.todo._id);
     }
 
-    disableEditing(e) {
-        e.preventDefault();
-        this.setState({
-            editing: false,
-            name: this.props.todo.name
-        });
+    disableEditing() {
+        this.props.disableEditing(this.props.todo._id);
     }
 
     updateTodo(e) {
@@ -52,16 +42,17 @@ class TodoListItem extends React.Component {
 
     saveTodo(e) {
         e.preventDefault();
+
         this.props.saveTodo({
             id: this.props.todo._id,
-            name: this.state.name,
-            complete: !this.state.complete,
+            name: this.props.todo.name,
         });
-        this.setState({editing: false});
+
+        this.disableEditing(this.props.todo._id);
     }
 
     editForm() {
-        if(this.state.editing == true) {
+        if(this.props.todo.editing == true) {
             return (
                 <form className="input-group input-group-sm" onSubmit={this.saveTodo}>
                     <input className="form-control" ref="editForm" type="text" value={this.props.todo.name} onChange={this.updateTodo}/>
@@ -74,7 +65,7 @@ class TodoListItem extends React.Component {
     }
 
     todoItem() {
-        if(this.state.editing != true) {
+        if(this.props.todo.editing != true) {
             return (
                 <div className="row" onDoubleClick={this.enableEditing}>
                     <div className="col-sm-1">

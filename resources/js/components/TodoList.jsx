@@ -9,23 +9,16 @@ class TodoList extends React.Component {
         this.saveTodo = this.saveTodo.bind(this);
         this.updateTodo = this.updateTodo.bind(this);
         this.updateStatus = this.updateStatus.bind(this);
+        this.enableEditing = this.enableEditing.bind(this);
+        this.disableEditing = this.disableEditing.bind(this);
     }
 
-    createItem(todo) {
-        return (
-            <TodoListItem
-                deleteTodo={this.props.deleteTodo}
-                saveTodo={this.saveTodo}
-                updateTodo={this.updateTodo}
-                updateStatus={this.updateStatus}
-                key={todo._id}
-                todo={todo}>
-            </TodoListItem>
-        );
+    enableEditing(id) {
+        this.props.enableEditing(id);
     }
 
-    enableEditing(todo) {
-        this.props.enableEditing(todo);
+    disableEditing(id) {
+        this.props.disableEditing(id)
     }
 
     saveTodo(todo) {
@@ -38,6 +31,21 @@ class TodoList extends React.Component {
 
     updateStatus(todo) {
         this.props.updateStatus(todo);
+    }
+
+    createItem(todo) {
+        return (
+            <TodoListItem
+                deleteTodo={this.props.deleteTodo}
+                saveTodo={this.saveTodo}
+                updateTodo={this.updateTodo}
+                updateStatus={this.updateStatus}
+                enableEditing={this.enableEditing}
+                disableEditing={this.disableEditing}
+                key={todo._id}
+                todo={todo}>
+            </TodoListItem>
+        );
     }
 
     render () {

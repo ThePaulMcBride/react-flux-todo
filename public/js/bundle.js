@@ -22096,6 +22096,16 @@
 	            TodoActions.updateStatus(todo);
 	        }
 	    }, {
+	        key: 'enableEditing',
+	        value: function enableEditing(id) {
+	            TodoActions.enableEditing(id);
+	        }
+	    }, {
+	        key: 'disableEditing',
+	        value: function disableEditing(id) {
+	            TodoActions.disableEditing(id);
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
@@ -22107,7 +22117,9 @@
 	                    updateTodo: this.updateTodo,
 	                    deleteTodo: this.deleteTodo,
 	                    saveTodo: this.saveTodo,
-	                    updateStatus: this.updateStatus
+	                    updateStatus: this.updateStatus,
+	                    enableEditing: this.enableEditing,
+	                    disableEditing: this.disableEditing
 	                }),
 	                _react2.default.createElement(_TodoForm2.default, { onFormSubmit: this.createTodo })
 	            );
@@ -22218,24 +22230,20 @@
 	        _this.saveTodo = _this.saveTodo.bind(_this);
 	        _this.updateTodo = _this.updateTodo.bind(_this);
 	        _this.updateStatus = _this.updateStatus.bind(_this);
+	        _this.enableEditing = _this.enableEditing.bind(_this);
+	        _this.disableEditing = _this.disableEditing.bind(_this);
 	        return _this;
 	    }
 	
 	    _createClass(TodoList, [{
-	        key: 'createItem',
-	        value: function createItem(todo) {
-	            return _react2.default.createElement(_TodoListItem2.default, {
-	                deleteTodo: this.props.deleteTodo,
-	                saveTodo: this.saveTodo,
-	                updateTodo: this.updateTodo,
-	                updateStatus: this.updateStatus,
-	                key: todo._id,
-	                todo: todo });
+	        key: 'enableEditing',
+	        value: function enableEditing(id) {
+	            this.props.enableEditing(id);
 	        }
 	    }, {
-	        key: 'enableEditing',
-	        value: function enableEditing(todo) {
-	            this.props.enableEditing(todo);
+	        key: 'disableEditing',
+	        value: function disableEditing(id) {
+	            this.props.disableEditing(id);
 	        }
 	    }, {
 	        key: 'saveTodo',
@@ -22251,6 +22259,19 @@
 	        key: 'updateStatus',
 	        value: function updateStatus(todo) {
 	            this.props.updateStatus(todo);
+	        }
+	    }, {
+	        key: 'createItem',
+	        value: function createItem(todo) {
+	            return _react2.default.createElement(_TodoListItem2.default, {
+	                deleteTodo: this.props.deleteTodo,
+	                saveTodo: this.saveTodo,
+	                updateTodo: this.updateTodo,
+	                updateStatus: this.updateStatus,
+	                enableEditing: this.enableEditing,
+	                disableEditing: this.disableEditing,
+	                key: todo._id,
+	                todo: todo });
 	        }
 	    }, {
 	        key: 'render',
@@ -22313,12 +22334,6 @@
 	        _this.updateTodo = _this.updateTodo.bind(_this);
 	        _this.saveTodo = _this.saveTodo.bind(_this);
 	        _this.updateStatus = _this.updateStatus.bind(_this);
-	
-	        _this.state = {
-	            name: _this.props.todo.name,
-	            editing: false,
-	            complete: _this.props.todo.complete
-	        };
 	        return _this;
 	    }
 	
@@ -22331,16 +22346,12 @@
 	    }, {
 	        key: 'enableEditing',
 	        value: function enableEditing() {
-	            this.setState({ editing: true });
+	            this.props.enableEditing(this.props.todo._id);
 	        }
 	    }, {
 	        key: 'disableEditing',
-	        value: function disableEditing(e) {
-	            e.preventDefault();
-	            this.setState({
-	                editing: false,
-	                name: this.props.todo.name
-	            });
+	        value: function disableEditing() {
+	            this.props.disableEditing(this.props.todo._id);
 	        }
 	    }, {
 	        key: 'updateTodo',
@@ -22363,17 +22374,18 @@
 	        key: 'saveTodo',
 	        value: function saveTodo(e) {
 	            e.preventDefault();
+	
 	            this.props.saveTodo({
 	                id: this.props.todo._id,
-	                name: this.state.name,
-	                complete: !this.state.complete
+	                name: this.props.todo.name
 	            });
-	            this.setState({ editing: false });
+	
+	            this.disableEditing(this.props.todo._id);
 	        }
 	    }, {
 	        key: 'editForm',
 	        value: function editForm() {
-	            if (this.state.editing == true) {
+	            if (this.props.todo.editing == true) {
 	                return _react2.default.createElement(
 	                    'form',
 	                    { className: 'input-group input-group-sm', onSubmit: this.saveTodo },
@@ -22393,7 +22405,7 @@
 	    }, {
 	        key: 'todoItem',
 	        value: function todoItem() {
-	            if (this.state.editing != true) {
+	            if (this.props.todo.editing != true) {
 	                return _react2.default.createElement(
 	                    'div',
 	                    { className: 'row', onDoubleClick: this.enableEditing },
@@ -22535,6 +22547,7 @@
 	exports.deleteTodo = deleteTodo;
 	exports.saveTodo = saveTodo;
 	exports.enableEditing = enableEditing;
+	exports.disableEditing = disableEditing;
 	exports.updateTodo = updateTodo;
 	exports.updateStatus = updateStatus;
 	exports.loadTodos = loadTodos;
@@ -22589,6 +22602,13 @@
 	function enableEditing(id) {
 	    _dispatcher2.default.dispatch({
 	        type: "ENABLE_EDITING",
+	        id: id
+	    });
+	}
+	
+	function disableEditing(id) {
+	    _dispatcher2.default.dispatch({
+	        type: "DISABLE_EDITING",
 	        id: id
 	    });
 	}
@@ -24475,6 +24495,28 @@
 	            this.emit('change');
 	        }
 	    }, {
+	        key: 'enableEditing',
+	        value: function enableEditing(id) {
+	            for (var i = 0; i < this.todos.length; i++) {
+	                if (this.todos[i]._id == id) {
+	                    this.todos[i].editing = true;
+	                }
+	            }
+	
+	            this.emit('change');
+	        }
+	    }, {
+	        key: 'disableEditing',
+	        value: function disableEditing(id) {
+	            for (var i = 0; i < this.todos.length; i++) {
+	                if (this.todos[i]._id == id) {
+	                    this.todos[i].editing = false;
+	                }
+	            }
+	
+	            this.emit('change');
+	        }
+	    }, {
 	        key: 'handleActions',
 	        value: function handleActions(action) {
 	            switch (action.type) {
@@ -24501,6 +24543,14 @@
 	
 	                case "UPDATE_STATUS":
 	                    this.updateStatus(action.todo);
+	                    break;
+	
+	                case "ENABLE_EDITING":
+	                    this.enableEditing(action.id);
+	                    break;
+	
+	                case "DISABLE_EDITING":
+	                    this.disableEditing(action.id);
 	                    break;
 	            }
 	        }

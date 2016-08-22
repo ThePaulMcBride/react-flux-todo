@@ -75,6 +75,30 @@ class TodoStore extends EventEmitter {
         this.emit('change');
     }
 
+    enableEditing(id) {
+        for(var i = 0; i < this.todos.length; i++)
+        {
+            if(this.todos[i]._id == id)
+            {
+                this.todos[i].editing = true;
+            }
+        }
+
+        this.emit('change');
+    }
+
+    disableEditing(id) {
+        for(var i = 0; i < this.todos.length; i++)
+        {
+            if(this.todos[i]._id == id)
+            {
+                this.todos[i].editing = false;
+            }
+        }
+
+        this.emit('change');
+    }
+
     handleActions(action) {
         switch(action.type) {
             case "RECEIVED_TODOS":
@@ -100,6 +124,14 @@ class TodoStore extends EventEmitter {
 
             case "UPDATE_STATUS":
                 this.updateStatus(action.todo)
+                break;
+
+            case "ENABLE_EDITING":
+                this.enableEditing(action.id);
+                break;
+
+            case "DISABLE_EDITING":
+                this.disableEditing(action.id);
                 break;
         }
     }

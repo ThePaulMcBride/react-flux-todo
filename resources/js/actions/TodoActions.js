@@ -38,24 +38,28 @@ export function saveTodo(todo) {
     });
 }
 
-export function enableEditing(id)
-{
+export function enableEditing(id) {
     dispatcher.dispatch({
         type: "ENABLE_EDITING",
         id
     });
 }
 
-export function updateTodo(todo)
-{
+export function disableEditing(id) {
+    dispatcher.dispatch({
+        type: "DISABLE_EDITING",
+        id
+    });
+}
+
+export function updateTodo(todo) {
     dispatcher.dispatch({
         type: "UPDATE_TODO",
         todo: todo
     });
 }
 
-export function updateStatus(todo)
-{
+export function updateStatus(todo) {
     axios.put('/todo/' + todo.id, {todo: todo}).then(function(response) {
         if(response.status == 200) {
             dispatcher.dispatch({

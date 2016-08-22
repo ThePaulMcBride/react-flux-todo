@@ -47,6 +47,14 @@ class TodoApp extends React.Component {
         TodoActions.updateStatus(todo);
     }
 
+    enableEditing(id) {
+        TodoActions.enableEditing(id);
+    }
+
+    disableEditing(id) {
+        TodoActions.disableEditing(id)
+    }
+
     render() {
         return (
             <div>
@@ -57,6 +65,8 @@ class TodoApp extends React.Component {
                     deleteTodo={this.deleteTodo}
                     saveTodo={this.saveTodo}
                     updateStatus={this.updateStatus}
+                    enableEditing={this.enableEditing}
+                    disableEditing={this.disableEditing}
                 />
                 <TodoForm onFormSubmit={this.createTodo}/>
             </div>
