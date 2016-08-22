@@ -39,11 +39,25 @@ class TodoApp extends React.Component {
         TodoActions.saveTodo(todo);
     }
 
+    updateTodo(todo) {
+        TodoActions.updateTodo(todo);
+    }
+
+    updateStatus(todo) {
+        TodoActions.updateStatus(todo);
+    }
+
     render() {
         return (
             <div>
                 <TodoBanner count={this.state.todos.length}/>
-                <TodoList todos={this.state.todos} deleteTodo={this.deleteTodo} saveTodo={this.saveTodo}/>
+                <TodoList
+                    todos={this.state.todos}
+                    updateTodo={this.updateTodo}
+                    deleteTodo={this.deleteTodo}
+                    saveTodo={this.saveTodo}
+                    updateStatus={this.updateStatus}
+                />
                 <TodoForm onFormSubmit={this.createTodo}/>
             </div>
         );

@@ -15,7 +15,7 @@ class TodoListItem extends React.Component {
             name: this.props.todo.name,
             editing: false,
             complete: this.props.todo.complete
-        }
+        };
     }
 
     deleteTodo(e) {
@@ -36,15 +36,17 @@ class TodoListItem extends React.Component {
     }
 
     updateTodo(e) {
-        this.setState({name: e.target.value});
+        this.props.updateTodo({
+            id: this.props.todo._id,
+            name: e.target.value,
+        });
     }
 
     updateStatus(e) {
-        this.setState({complete: e.target.checked});
-        this.props.saveTodo({
+        this.props.updateStatus({
             id: this.props.todo._id,
-            name: this.state.name,
-            complete: !this.state.complete,
+            complete: e.target.checked,
+            name: this.props.todo.name
         });
     }
 
@@ -62,10 +64,9 @@ class TodoListItem extends React.Component {
         if(this.state.editing == true) {
             return (
                 <form className="input-group input-group-sm" onSubmit={this.saveTodo}>
-                    <input className="form-control" ref="editForm" type="text" value={this.state.name} onChange={this.updateTodo}/>
+                    <input className="form-control" ref="editForm" type="text" value={this.props.todo.name} onChange={this.updateTodo}/>
                     <div className="input-group-btn">
                         <button className="btn btn-primary"><span className="glyphicon glyphicon-ok"></span></button>
-                        <button className="btn btn-primary" onClick={this.disableEditing}><span className="glyphicon glyphicon-remove"></span></button>
                     </div>
                 </form>
             )
@@ -77,7 +78,7 @@ class TodoListItem extends React.Component {
             return (
                 <div className="row" onDoubleClick={this.enableEditing}>
                     <div className="col-sm-1">
-                        <input type="checkbox" defaultChecked={this.state.complete} onClick={this.updateStatus} />
+                        <input type="checkbox" defaultChecked={this.props.todo.complete} onClick={this.updateStatus} />
                     </div>
                     <div className="col-sm-9"><span className="name">{this.props.todo.name}</span></div>
                     <div className="col-sm-2">

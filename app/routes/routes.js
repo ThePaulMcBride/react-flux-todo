@@ -31,6 +31,7 @@ router.post('/todos', function(req, res) {
 router.put('/todo/:id', function(req, res) {
     var id = req.params.id;
     var sentTodo = req.body.todo;
+    console.log(sentTodo);
     if(id && sentTodo) {
         Todo.findOneAndUpdate({_id : id}, {name: sentTodo.name, complete: sentTodo.complete}, function(err, todo) {
             if(err) {

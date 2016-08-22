@@ -12,8 +12,7 @@ class TodoStore extends EventEmitter {
         return this.todos;
     }
 
-    createTodo(todo)
-    {
+    createTodo(todo) {
         var _id = todo._id;
         var name = todo.name;
 
@@ -26,8 +25,7 @@ class TodoStore extends EventEmitter {
         this.emit('change');
     }
 
-    deleteTodo(todo)
-    {
+    deleteTodo(todo) {
         for(var i = 0; i < this.todos.length; i++)
         {
             if(this.todos[i]._id == todo._id)
@@ -39,8 +37,34 @@ class TodoStore extends EventEmitter {
         this.emit('change');
     }
 
-    saveTodo(todo)
+    updateTodo(todo)
     {
+        for(var i = 0; i < this.todos.length; i++)
+        {
+            if(this.todos[i]._id == todo.id)
+            {
+                this.todos[i].name = todo.name;
+            }
+        }
+
+        this.emit('change');
+    }
+
+    updateStatus(todo) {
+        console.log(todo);
+
+        for(var i = 0; i < this.todos.length; i++)
+        {
+            if(this.todos[i]._id == todo.id)
+            {
+                this.todos[i].status = todo.status;
+            }
+        }
+
+        this.emit('change');
+    }
+
+    saveTodo(todo) {
         for(var i = 0; i < this.todos.length; i++)
         {
             if(this.todos[i]._id == todo.id)
@@ -70,6 +94,14 @@ class TodoStore extends EventEmitter {
 
             case "SAVE_TODO":
                 this.saveTodo(action.todo);
+                break;
+
+            case "UPDATE_TODO":
+                this.updateTodo(action.todo);
+                break;
+
+            case "UPDATE_STATUS":
+                this.updateStatus(action.todo)
                 break;
         }
     }
